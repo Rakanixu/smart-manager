@@ -22,9 +22,14 @@ export class MongoDB {
     });
   }
 
-  public async searchDocuments(rule: any, sort: any, collectionName: string) {
+  public async searchDocuments(rule: any, sort: any, collectionName: string, returnId?: boolean) {
+    const filter = { _id: 0 };
+    if (returnId) {
+      delete filter._id;
+    }
+
     return new Promise((resolve, reject) => {
-      this.conn.collection(collectionName).find(rule, { _id: 0 }).sort(sort).toArray((err: any, docs: any) => {
+      this.conn.collection(collectionName).find(rule, filter).sort(sort).toArray((err: any, docs: any) => {
         if (err) {
           reject(err);
         } else {

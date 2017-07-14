@@ -1,11 +1,13 @@
 import * as express from 'express';
 import * as health from './api/health';
 import * as user from './api/user-account';
+import * as project from './api/project';
 import { config } from './config';
 
 const RESOURCES = {
     HEALTH: '/health',
-    USER: '/user'
+    USER: '/user',
+    PROJECT: '/project'
 };
 
 export function setupRoutes(app: express.Express) {
@@ -13,6 +15,7 @@ export function setupRoutes(app: express.Express) {
 
     router.use(RESOURCES.HEALTH, health.routes);
     router.use(RESOURCES.USER, user.routes);
+    router.use(RESOURCES.PROJECT, project.routes);
 
     app.use(config.apiPathPrefix, router);
     app.use('/', (req, res) => {
