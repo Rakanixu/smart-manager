@@ -4,11 +4,14 @@ import { ICustomRequest } from '../utils/custom.types';
 import { removePrefix } from '../utils/auth';
 import { can } from './permissions';
 import { Server } from '../server';
+import { config } from '../config/index';
 import * as localAuth from './local';
 
 export function configure(srv: Server) {
     console.log('Auth module setup');
     srv.app.post('/login',  localAuth.login);
+    srv.app.use(config.apiPathPrefix, isAuth);
+
     srv.app.get('/secret', isAuth, function (req: ICustomRequest, res: express.Response) {
         res.json({ message: 'Success! You can not see this without a token'});
     });
@@ -17,7 +20,11 @@ export function configure(srv: Server) {
 }
 
 export function isAuth(req: express.Request, res: express.Response, next: express.NextFunction) {
-    localAuth.auth()(req, res, next);
+    if (!(req.url === '/user' && req.method === 'POST')) {
+        localAuth.auth()(req, res, next);
+    } else {
+        next();
+    }
 }
 
 /** Main authorization middleware. */
