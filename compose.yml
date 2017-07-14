@@ -1,0 +1,14 @@
+version: '2'
+services:
+  mongo-smart-manager:
+   image: mongo
+   hostname: "mongo-smart-manager"
+   networks:
+     - smart-manager
+   ports:
+     - "27017:27017"
+
+networks:
+  smart-manager:
+    # Not using outside this images so far
+    external: false
