@@ -20,6 +20,7 @@ export class UserAccountDB {
 
   public async createUser(userAccount: UserAccount) {
     userAccount._id = userAccount.email;
+
     return this.db.insertDocument(userAccount, UserAccountDB.collection);
   }
 

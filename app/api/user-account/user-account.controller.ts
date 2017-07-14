@@ -1,5 +1,6 @@
 import { UserAccountDB } from './user-account.db';
 import { UserAccount } from './user-account.model';
+import { hash } from '../../utils/auth';
 
 const userAccountDB = new UserAccountDB();
 
@@ -8,6 +9,7 @@ export async function getUsers() {
 }
 
 export async function createUser(userAccount: UserAccount) {
+  userAccount.password = hash(userAccount.password);
   return userAccountDB.createUser(userAccount);
 }
 
